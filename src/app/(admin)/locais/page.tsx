@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { RecursosClient } from '@/components/admin/RecursosClient'
+import type { Local } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,12 +11,14 @@ export default async function LocaisPage() {
     .select('*')
     .order('nome')
 
+  const itens: Local[] = (data ?? []) as Local[]
+
   return (
     <RecursosClient
       tipo="local"
       titulo="Locais"
       emoji="📍"
-      itens={(data ?? []).map(d => ({ id: d.id, nome: d.nome, descricao: d.descricao, is_active: d.is_active, created_at: d.created_at }))}
+      itens={itens}
     />
   )
 }

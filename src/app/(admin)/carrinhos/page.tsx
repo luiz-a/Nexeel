@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { RecursosClient } from '@/components/admin/RecursosClient'
+import type { Carrinho } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,12 +11,14 @@ export default async function CarrinhosPage() {
     .select('*')
     .order('nome')
 
+  const itens: Carrinho[] = (data ?? []) as Carrinho[]
+
   return (
     <RecursosClient
       tipo="carrinho"
       titulo="Carrinhos"
       emoji="🛒"
-      itens={(data ?? []).map(d => ({ id: d.id, nome: d.nome, is_active: d.is_active, created_at: d.created_at }))}
+      itens={itens}
     />
   )
 }
