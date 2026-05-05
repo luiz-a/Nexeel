@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { loginSchema, type LoginFormData } from '@/lib/validations'
 import { useAuthStore } from '@/stores/auth.store'
 import { InstallBanner } from '@/components/shared/InstallBanner'
+import type { Profile } from '@/types'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -34,11 +35,13 @@ export default function LoginPage() {
 
     if (error) { setErro('E-mail ou senha incorretos'); return }
 
-    const { data: profile } = await supabase
+    const { data } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', authData.user.id)
       .single()
+
+    const profile = data as Profile | null
 
     if (!profile) { setErro('Perfil não encontrado'); return }
 
