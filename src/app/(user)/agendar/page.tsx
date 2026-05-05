@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { AgendarClient } from '@/components/user/AgendarClient'
+import { InstallBanner } from '@/components/shared/InstallBanner'
 
 export const dynamic = 'force-dynamic'
 
@@ -33,11 +34,14 @@ export default async function AgendarPage() {
   ])
 
   return (
-    <AgendarClient
-      carrinhos={carrinhos ?? []}
-      locais={locais ?? []}
-      meusAgendamentos={meuAgendamentos ?? []}
-      userId={user!.id}
-    />
+    <>
+      <InstallBanner />
+      <AgendarClient
+        carrinhos={carrinhos ?? []}
+        locais={locais ?? []}
+        meusAgendamentos={meuAgendamentos ?? []}
+        userId={user!.id}
+      />
+    </>
   )
 }

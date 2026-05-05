@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createClient } from '@/lib/supabase/client'
 import { loginSchema, type LoginFormData } from '@/lib/validations'
 import { useAuthStore } from '@/stores/auth.store'
+import { InstallBanner } from '@/components/shared/InstallBanner'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -62,7 +63,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-zinc-950 p-4">
       <div className="w-full max-w-md">
-
+        <InstallBanner />
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-500 mb-4">
             <span className="text-3xl">🛒</span>
