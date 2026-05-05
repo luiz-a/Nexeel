@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -24,26 +23,26 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) })
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (formData: LoginFormData) => {
     setErro(null)
     const supabase = createClient()
 
     const { data: authData, error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
+      email: formData.email,
+      password: formData.password,
     })
 
     if (error) { setErro('E-mail ou senha incorretos'); return }
 
-    const { data } = await supabase
+    const { data: profileData } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', authData.user.id)
       .single()
 
-    const profile = data as Profile | null
+    const profile = profileData as Profile | null
 
-    if (!profile) { setErro('Perfil não encontrado'); return }
+    if (!profile) { setErro('Perfil nao encontrado'); return }
 
     if (!profile.is_active) {
       await supabase.auth.signOut()
@@ -51,10 +50,9 @@ export default function LoginPage() {
       return
     }
 
-    // Notificar admin sobre o login em tempo real
     await supabase.from('notificacoes').insert({
       tipo: 'login',
-      titulo: 'Usuário entrou no sistema',
+      titulo: 'Usuario entrou no sistema',
       mensagem: `${profile.full_name} (${profile.email}) fez login agora.`,
       usuario_id: profile.id,
     })
@@ -66,7 +64,9 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-zinc-950 p-4">
       <div className="w-full max-w-md">
+
         <InstallBanner />
+
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-500 mb-4">
             <span className="text-3xl">🛒</span>
@@ -130,7 +130,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center text-zinc-600 text-xs mt-6">
-          Não tem acesso? Solicite ao administrador.
+          Nao tem acesso? Solicite ao administrador.
         </p>
       </div>
     </main>
