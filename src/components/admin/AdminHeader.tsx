@@ -8,6 +8,7 @@ import { useNotificacaoStore } from '@/stores/notifications.store'
 import { formatDistanceToNow, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type { Notificacao, Profile } from '@/types'
+import { PushButton } from '@/components/shared/PushButton'
 
 interface Props {
   profile: Profile
@@ -227,6 +228,7 @@ export function AdminHeader({ profile, notificacoesIniciais }: Props) {
             >
               Sair
             </button>
+            <PushButton userId={profile.id} />
           </div>
         </div>
       </div>

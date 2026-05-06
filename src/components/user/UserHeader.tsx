@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Profile } from '@/types'
+import { PushButton } from '@/components/shared/PushButton'
 
 interface Props { profile: Profile }
 
@@ -38,6 +39,7 @@ export function UserHeader({ profile }: Props) {
           >
             Sair
           </button>
+          <PushButton userId={profile.id} />
         </div>
       </div>
     </header>
