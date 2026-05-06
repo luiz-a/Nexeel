@@ -50,7 +50,7 @@ export default function LoginPage() {
       return
     }
 
-    await supabase.from('notificacoes').insert({
+    await (supabase as any).from('notificacoes').insert({
       tipo: 'login',
       titulo: 'Usuario entrou no sistema',
       mensagem: `${profile.full_name} (${profile.email}) fez login agora.`,

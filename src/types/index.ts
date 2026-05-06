@@ -12,14 +12,14 @@ export interface Profile {
   created_at: string
   updated_at: string
 }
- 
+
 export interface Carrinho {
   id: string
   nome: string
   is_active: boolean
   created_at: string
 }
- 
+
 export interface Local {
   id: string
   nome: string
@@ -27,7 +27,7 @@ export interface Local {
   is_active: boolean
   created_at: string
 }
- 
+
 export interface Agendamento {
   id: string
   usuario_id: string
@@ -45,7 +45,7 @@ export interface Agendamento {
   carrinhos?: Carrinho
   locais?: Local
 }
- 
+
 export interface Notificacao {
   id: string
   tipo: NotificacaoTipo
@@ -57,9 +57,9 @@ export interface Notificacao {
   created_at: string
   profiles?: Profile
 }
- 
+
 // ── Tipagem do Supabase client ────────────────────────────────
- 
+
 export type Database = {
   public: {
     Tables: {
@@ -85,7 +85,14 @@ export type Database = {
       }
       notificacoes: {
         Row: Notificacao
-        Insert: Omit<Notificacao, 'id' | 'created_at'>
+        Insert: {
+          tipo: NotificacaoTipo
+          titulo: string
+          mensagem: string
+          usuario_id?: string | null
+          agendamento_id?: string | null
+          lida?: boolean
+        }
         Update: Partial<Pick<Notificacao, 'lida'>>
       }
     }
@@ -109,19 +116,18 @@ export type Database = {
     }
   }
 }
- 
+
 // ── Constantes de turno ───────────────────────────────────────
- 
+
 export const TURNOS: Record<Turno, { label: string; inicio: string; fim: string; emoji: string }> = {
-  manha: { label: 'Manhã',  inicio: '07:00', fim: '12:00', emoji: '🌅' },
-  tarde: { label: 'Tarde',  inicio: '12:00', fim: '18:00', emoji: '☀️' },
-  noite: { label: 'Noite',  inicio: '18:00', fim: '23:00', emoji: '🌙' },
+  manha: { label: 'Manhã', inicio: '07:00', fim: '12:00', emoji: '🌅' },
+  tarde: { label: 'Tarde', inicio: '12:00', fim: '18:00', emoji: '☀️' },
+  noite: { label: 'Noite', inicio: '18:00', fim: '23:00', emoji: '🌙' },
 }
- 
+
 export const STATUS_CONFIG: Record<ScheduleStatus, { label: string; color: string }> = {
-  pendente:  { label: 'Aguardando', color: 'text-amber-400 bg-amber-950 border-amber-800' },
-  aprovado:  { label: 'Aprovado',   color: 'text-green-400 bg-green-950 border-green-800' },
-  recusado:  { label: 'Recusado',   color: 'text-red-400 bg-red-950 border-red-800'       },
-  cancelado: { label: 'Cancelado',  color: 'text-zinc-400 bg-zinc-800 border-zinc-700'    },
+  pendente: { label: 'Aguardando', color: 'text-amber-400 bg-amber-950 border-amber-800' },
+  aprovado: { label: 'Aprovado', color: 'text-green-400 bg-green-950 border-green-800' },
+  recusado: { label: 'Recusado', color: 'text-red-400 bg-red-950 border-red-800' },
+  cancelado: { label: 'Cancelado', color: 'text-zinc-400 bg-zinc-800 border-zinc-700' },
 }
- 
