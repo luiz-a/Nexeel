@@ -1,4 +1,5 @@
 'use client'
+import { Suspense } from 'react'
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -9,7 +10,7 @@ import { useAuthStore } from '@/stores/auth.store'
 import { InstallBanner } from '@/components/shared/InstallBanner'
 import type { Profile } from '@/types'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { setProfile } = useAuthStore()
@@ -134,5 +135,17 @@ export default function LoginPage() {
         </p>
       </div>
     </main>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen flex items-center justify-center bg-zinc-950">
+        <div className="text-zinc-500 text-sm">Carregando...</div>
+      </main>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }
